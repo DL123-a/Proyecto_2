@@ -5,9 +5,9 @@ from recommendation import recommend_users_with_reason
 def load_sample_data():
     clear_db()
 
-    create_user("Alice")
-    create_user("Bob")
-    create_user("Charlie")
+    create_user("Alice", "alice")
+    create_user("Bob", "bob")
+    create_user("Charlie", "charlie")
 
     create_interest("Gaming")
     create_interest("Arte")
@@ -17,6 +17,7 @@ def load_sample_data():
     add_interest("Charlie", "Arte")
 
     follow("Alice", "Bob")
+    follow("Charlie", "Bob")
 
 
 if __name__ == "__main__":
