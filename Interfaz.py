@@ -229,11 +229,11 @@ elif section == "Seguir Usuario":
             else:
                 st.warning("Completa todos los campos")
 
-
 # ------------------------------------------------------------------
 # RECOMENDACIONES
 # ------------------------------------------------------------------
 elif section == "Recomendaciones":
+
     st.header("Recomendaciones de Usuarios")
 
     username_recommendation = st.text_input(
@@ -248,49 +248,61 @@ elif section == "Recomendaciones":
     )
 
     if st.button("Generar Recomendaciones"):
+
         if username_recommendation.strip():
 
-            # ------------------------------------------------------------------
-            # EJEMPLO TEMPORAL
-            # Reemplaza esto por tu algoritmo real
-            # ------------------------------------------------------------------
-            recommendations = [
-                {
-                    "username": "alice",
-                    "mutual_friends": 4,
-                    "common_interests": ["Gaming", "Programming"]
-                },
-                {
-                    "username": "bob",
-                    "mutual_friends": 2,
-                    "common_interests": ["Movies"]
-                }
-            ]
+            try:
 
-            st.subheader("Usuarios recomendados")
+                recommendations = recommend_users_with_reason(
+                    username_recommendation
+                )
 
-            for user in recommendations:
-                with st.container(border=True):
-                    st.markdown(f"### @{user['username']}")
-                    st.write(
-                        f"Amigos en común: {user['mutual_friends']}"
+                if recommendations:
+
+                    st.subheader("Usuarios recomendados")
+
+                    for user in recommendations[:amount]:
+
+                        with st.container(border=True):
+
+                            st.markdown(
+                                f"### @{user['usuario']}"
+                            )
+
+                            st.write(
+                                f"Amigos en común: {user['amigos_en_comun']}"
+                            )
+
+                            st.write(
+                                "Intereses compartidos: " +
+                                ", ".join(user['intereses_lista'])
+                            )
+
+                            if st.button(
+                                f"Seguir @{user['usuario']}",
+                                key=user['usuario']
+                            ):
+
+                                follow(
+                                    username_recommendation,
+                                    user['usuario']
+                                )
+
+                                st.success(
+                                    f"Ahora sigues a @{user['usuario']}"
+                                )
+
+                else:
+                    st.info(
+                        "No se encontraron recomendaciones para este usuario"
                     )
-                    st.write(
-                        "Intereses en común: " +
-                        ", ".join(user['common_interests'])
-                    )
 
-                    if st.button(
-                        f"Seguir @{user['username']}",
-                        key=user['username']
-                    ):
-                        follow(username_recommendation, user['username'])
-                        st.success(
-                            f"Ahora sigues a @{user['username']}"
-                        )
+            except Exception as e:
+                st.error(f"Error: {e}")
 
         else:
             st.warning("Ingresa un nombre de usuario")
+
 
 
 # ------------------------------------------------------------------
