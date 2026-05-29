@@ -1,30 +1,15 @@
-from db import *
 from recommendation import recommend_users_with_reason
 
+usuario = "aaron"
 
-def load_sample_data():
-    clear_db()
+recomendaciones = recommend_users_with_reason(usuario)
 
-    create_user("Alice", "alice")
-    create_user("Bob", "bob")
-    create_user("Charlie", "charlie")
+print(f"\nRecomendaciones para @{usuario}\n")
 
-    create_interest("Gaming")
-    create_interest("Arte")
+for r in recomendaciones:
 
-    add_interest("Alice", "Gaming")
-    add_interest("Bob", "Gaming")
-    add_interest("Charlie", "Arte")
-
-    follow("Alice", "Bob")
-    follow("Charlie", "Bob")
-
-
-if __name__ == "__main__":
-    load_sample_data()
-
-    recomendaciones = recommend_users_with_reason("Alice")
-
-    print("Recomendaciones para Alice:\n")
-    for r in recomendaciones:
-        print(f"{r['usuario']} | Intereses en común: {r['intereses_comunes']} | Amigos en común: {r['amigos_en_comun']}")
+    print(
+        f"@{r['usuario']} | "
+        f"Intereses en común: {r['intereses_comunes']} | "
+        f"Amigos en común: {r['amigos_en_comun']}"
+    )
